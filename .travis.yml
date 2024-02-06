@@ -17,3 +17,10 @@ after_success:
   - docker build -t swich313/multi-nginx ./nginx
   - docker build -t swich313/multi-server ./server
   - docker build -t swich313/multi-worker ./worker
+#  Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# Take those images and push them to docker hub
+  - docker push swich313/multi-client
+  - docker push swich313/multi-nginx
+  - docker push swich313/multi-server
+  - docker push swich313/multi-worker

@@ -1,0 +1,19 @@
+sudo: required
+services:
+  - docker
+  
+before_install:
+  - docker build -t swich313/react-test -f ./client/Dockerfile.dev ./client
+#  if there are tests for worker or server you could run
+#  - docker build swich313/worker-test -f ./worker/Dockerfile.dev ./worker
+
+script:
+  - docker run -e CI=true swich313/react-test npm test
+#  if there are tests for worker or server you could run
+#  - docker run swich313/worker-test npm run test
+
+after_success:
+  - docker build -t swich313/multi-client ./client
+  - docker build -t swich313/multi-nginx ./nginx
+  - docker build -t swich313/multi-server ./server
+  - docker build -t swich313/multi-worker ./worker
